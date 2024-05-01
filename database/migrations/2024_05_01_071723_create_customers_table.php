@@ -10,11 +10,9 @@
         public function up(): void {
             Schema::create('customers', function (Blueprint $table) {
                 $table->id();
-                $table->string('first_name');
-                $table->string('middle_name');
-                $table->string('surname');
-                $table->date('dob');
-                $table->string('gender');
+                // $table->string('first_name');
+                // $table->string('middle_name');
+                // $table->string('surname'); this three attribute i replaced them by attribute name in the user table
                 $table->unsignedBigInteger('user_id');
                 $table->unsignedBigInteger('account_id');
                 $table->timestamps();

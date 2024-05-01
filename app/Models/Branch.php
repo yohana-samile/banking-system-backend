@@ -6,7 +6,7 @@
     class Branch extends Model {
         use HasFactory;
         protected $fillable = [
-            'name', 'address', 'branch_number', 'country', 'city', 'district', 'zip_code'
+            'name', 'address', 'branch_number', 'country', 'city', 'district', 'ward'
         ];
         public function employees(){
             return $this->hasMany(Employee::class);

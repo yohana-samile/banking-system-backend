@@ -12,8 +12,6 @@
                 $table->id();
                 $table->unsignedBigInteger('branch_id');
                 $table->unsignedBigInteger('user_id');
-                $table->string('gender');
-                $table->date('dob');
                 $table->timestamps();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');

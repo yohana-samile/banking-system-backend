@@ -10,10 +10,12 @@
         public function up(): void {
             Schema::create('branches', function (Blueprint $table) {
                 $table->id();
+                $table->string('name');
                 $table->string('branch_number')->unique();
                 $table->string('country');
-                $table->string('city');
+                $table->string('city'); //region
                 $table->string('district');
+                $table->string('ward');
                 $table->string('zip_code');
                 $table->timestamps();
             });

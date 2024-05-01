@@ -30,7 +30,7 @@
     Route::controller(BranchController::class)->group(function () {
         Route::get('/branches', 'index');
         Route::get('branches/{id}', 'show');
-        Route::post('branches/{id}', 'store');
+        Route::post('/branches', 'store');
         Route::put('branches/{id}', 'update');
         Route::delete('branches/{id}', 'destroy');
     });
