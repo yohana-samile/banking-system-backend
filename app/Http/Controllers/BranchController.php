@@ -11,7 +11,7 @@
 
         public function store(Request $request){
             $store = Branch::create($request->all());
-            return response()->json(["success" => "new branch created"]);
+            return response()->json(["success" => "new branch created"], 201);
         }
 
         public function show(Request $request, $id){
@@ -27,13 +27,13 @@
         public function edit(Request $request, $id){
             $branch = Branch::findOrFail($id);
             $branch->update($request->all());
-            return response()->json(["success" => "branch updated"]);
+            return response()->json($branch, 200);
         }
 
         public function delete(Request $request, $id){
             $branch = Branch::findOrFail($id);
             $branch->delete($branch);
-            return response()->json(["success" => "branch deleted"]);
+            return response()->json($branch, 200);
         }
     }
 

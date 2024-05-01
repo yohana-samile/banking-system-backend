@@ -11,8 +11,6 @@
             Schema::create('branches', function (Blueprint $table) {
                 $table->id();
                 $table->string('branch_number')->unique();
-                $table->string('name');
-                $table->string('address');
                 $table->string('country');
                 $table->string('city');
                 $table->string('district');
@@ -24,8 +22,7 @@
         /**
          * Reverse the migrations.
          */
-        public function down(): void
-        {
+        public function down(): void {
             Schema::dropIfExists('branches');
         }
     };

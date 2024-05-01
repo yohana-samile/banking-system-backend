@@ -3,12 +3,12 @@
     use Illuminate\Database\Eloquent\Factories\HasFactory;
     use Illuminate\Database\Eloquent\Model;
 
-    class Branch extends Model {
+    class Actual_balance extends Model {
         use HasFactory;
         protected $fillable = [
-            'name', 'address', 'branch_number', 'country', 'city', 'district', 'zip_code'
+            'balance', 'customer_account_id'
         ];
-        public function employees(){
-            return $this->hasMany(Employee::class);
+        public function customerAccount(){
+            return $this->belongsTo(CustomerAccount::class);
         }
     }

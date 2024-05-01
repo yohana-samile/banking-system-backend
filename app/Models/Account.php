@@ -8,4 +8,7 @@
         protected $fillable = [
             'name', 'account_type'
         ];
+        public function customers(){
+            return $this->hasMany(Customer::class);
+        }
     }
