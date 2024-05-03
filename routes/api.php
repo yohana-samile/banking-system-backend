@@ -3,6 +3,7 @@
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\AccountController;
     use App\Http\Controllers\BranchController;
+    use App\Http\Controllers\LocationController;
 
     /*
     |--------------------------------------------------------------------------
@@ -27,10 +28,19 @@
         Route::delete('accounts/{id}', 'destroy');
     });
 
+    // branches
     Route::controller(BranchController::class)->group(function () {
         Route::get('/branches', 'index');
         Route::get('branches/{id}', 'show');
         Route::post('/branches', 'store');
         Route::put('branches/{id}', 'update');
         Route::delete('branches/{id}', 'destroy');
+    });
+
+    // locations
+    Route::controller(LocationController::class)->group(function () {
+        Route::get('/locations', 'index');
+        Route::get('/regions', 'regions');
+        Route::get('/districts', 'districts');
+        Route::get('/wards', 'wards');
     });

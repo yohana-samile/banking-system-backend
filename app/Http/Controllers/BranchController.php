@@ -24,13 +24,13 @@
             }
         }
 
-        public function edit(Request $request, $id){
+        public function update(Request $request, $id){
             $branch = Branch::findOrFail($id);
             $branch->update($request->all());
             return response()->json($branch, 200);
         }
 
-        public function delete(Request $request, $id){
+        public function destroy(Request $request, $id){
             $branch = Branch::findOrFail($id);
             $branch->delete($branch);
             return response()->json($branch, 200);
