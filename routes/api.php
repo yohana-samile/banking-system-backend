@@ -4,6 +4,9 @@
     use App\Http\Controllers\AccountController;
     use App\Http\Controllers\BranchController;
     use App\Http\Controllers\LocationController;
+    use App\Http\Controllers\UserController;
+    use App\Http\Controllers\UserCustomerController;
+    use App\Http\Controllers\CustomLoginController;
 
     /*
     |--------------------------------------------------------------------------
@@ -43,4 +46,29 @@
         Route::get('/regions', 'regions');
         Route::get('/districts', 'districts');
         Route::get('/wards', 'wards');
+    });
+
+    // user employees
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/employees', 'employees');
+        Route::get('/roles', 'roles');
+        Route::get('employees/{id}', 'show');
+        Route::post('/employees', 'store');
+        Route::put('employees/{id}', 'update');
+        Route::delete('employees/{id}', 'destroy');
+    });
+
+    // user customers
+    Route::controller(UserCustomerController::class)->group(function () {
+        Route::get('/customers', 'index');
+        Route::get('customers/{id}', 'show');
+        Route::post('/customers', 'store');
+        Route::put('customers/{id}', 'update');
+        Route::delete('customers/{id}', 'destroy');
+    });
+
+    Route::controller(CustomLoginController::class)->group(function () {
+        Route::get('/users', 'users');
+        Route::post('/users', 'login');
+        Route::post('/logout', 'logout');
     });
