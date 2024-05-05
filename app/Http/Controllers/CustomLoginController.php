@@ -19,6 +19,8 @@
         public function login(Request $request){
             $credentials = $request->only('email', 'password');
             if (Auth::attempt($credentials)) {
+                $token= auth()->user()->createToken('auth_token')->plainTextToken;
+                $user = auth()->user();
                 return response()->json(['message' => 'Login successful'], 200);
             }
             else {
@@ -26,7 +28,10 @@
             }
         }
         public function logout(Request $request) {
-            Auth::logout();
+            // Auth::logout();
+            if ($request->user() && $request->user()->currentAccessToken()) {
+                $request->user()->currentAccessToken()->delete();
+            }
             return response()->json(200);
         }
     }
