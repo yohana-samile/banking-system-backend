@@ -8,6 +8,8 @@
     use App\Http\Controllers\UserController;
     use App\Http\Controllers\UserCustomerController;
     use App\Http\Controllers\AccountTypeController;
+    use App\Http\Controllers\CustomerBalanceController;
+    use App\Http\Controllers\BankBalanceController;
     // use App\Http\Controllers\CustomLoginController;
 
     /*
@@ -88,4 +90,22 @@
         Route::post('/customers', 'store');
         Route::put('customers/{id}', 'update');
         Route::delete('customers/{id}', 'destroy');
+    });
+
+    // balance
+    Route::controller(CustomerBalanceController::class)->group(function () {
+        Route::get('/actual_balance', 'index');
+        Route::get('actual_balance/{id}', 'show');
+        Route::post('/actual_balance', 'store');
+        Route::put('actual_balance/{id}', 'update');
+        // Route::delete('actual_balance/{id}', 'destroy'); // you cnt delete balance
+        Route::get('show_accounts/{id}', 'show_accounts');
+    });
+
+    // bankBalance
+    Route::controller(BankBalanceController::class)->group(function () {
+        Route::get('/bankBalance', 'index');
+        Route::get('bankBalance/{id}', 'show');
+        Route::post('/bankBalance', 'store');
+        Route::get('/total_balance', 'total_balance');
     });

@@ -1,25 +1,27 @@
 <?php
     namespace App\Http\Controllers;
     use Illuminate\Http\Request;
+    use App\Models\Actual_balance;
+    use DB;
 
     class CustomerBalanceController extends Controller
     {
         public function index(){
-            $accountType = AccountType::get();
-            return response()->json($accountType);
+            $actual_balance = Actual_balance::get();
+            return response()->json($actual_balance);
         }
 
         public function store(Request $request){
-            $accountType = AccountType::create($request->all());
+            $actual_balance = Actual_balance::create($request->all());
             return response()->json([
                 "message" => "account type created"
             ], 201);
         }
 
         public function show($id){
-            $accountType = AccountType::find($id);
-            if (!empty($accountType)) {
-                return response()->json($accountType, 200);
+            $actual_balance = Actual_balance::find($id);
+            if (!empty($actual_balance)) {
+                return response()->json($actual_balance, 200);
             }
             else{
                 return response()->json([
@@ -29,16 +31,25 @@
         }
 
         public function update(Request $request, $id){
-            $accountType = AccountType::findOrFail($id);
-            $accountType->update($request->all());
+            $actual_balance = Actual_balance::findOrFail($id);
+            $actual_balance->update($request->all());
             // return response()->json(['success' => "updated"], 200);
-            return response()->json($accountType, 200);
+            return response()->json($actual_balance, 200);
         }
 
         public function destroy($id){
-            $accountType = AccountType::findOrFail($id);
-            $accountType->delete();
-            // return response()->json(['success' => "deleted"], 204);
-            return response()->json($accountType, 204);
+            // you can't delete customer balance
+
+            // $actual_balance = Actual_balance::findOrFail($id);
+            // $actual_balance->delete();
+            // // return response()->json(['success' => "deleted"], 204);
+            // return response()->json($actual_balance, 204);
+        }
+        public function show_accounts($id){
+            $user = DB::select("SELECT customers.id FROM `customers` WHERE user_id = ?", [$id]);
+            $user = $user[0];
+            $user_id = $user->id;
+            $my_accounts = DB::select("SELECT customers.id, accounts.name as account_name FROM customers, accounts WHERE customers.account_id = accounts.id AND customers.id = '$user_id' ");
+            return response()->json($my_accounts);
         }
     }
