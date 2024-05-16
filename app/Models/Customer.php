@@ -17,4 +17,8 @@
         public function loans(){
             return $this->hasMany(Loan::class);
         }
+        public function customerAccounts()
+        {
+            return $this->hasMany(CustomerAccount::class);
+        }
     }

@@ -11,8 +11,10 @@
             Schema::create('accounts', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
-                $table->string('account_type');
+                $table->string('account_for');
+                $table->unsignedBigInteger('account_type_id');
                 $table->timestamps();
+                $table->foreign('account_type_id')->references('id')->on('account_types')->onDelete('cascade');
             });
         }
 

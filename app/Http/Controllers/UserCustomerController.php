@@ -4,6 +4,7 @@
     use App\Models\Customer;
     use App\Models\User;
     use App\Models\Role;
+    use App\Models\CustomerAccount;
     use App\Models\Branch;
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Support\Facades\Hash;
@@ -12,11 +13,12 @@
     class UserCustomerController extends Controller {
         public function index(){
             // $customers = Customer::all();
-            $customers = DB::select("
-                SELECT users.id, users.name as user_name, users.email, users.phone_number, users.gender, users.address, users.dob, roles.name as role_name, accounts.name as account_name, accounts.account_type FROM users, customers, roles, accounts WHERE
+            $customers = DB::select("SELECT users.id, users.name as user_name, users.email, users.phone_number, users.gender, users.address, users.dob, roles.name as role_name, accounts.name as account_name, account_types.account_type_name FROM
+                users, customers, roles, accounts, account_types WHERE
                 customers.user_id = users.id AND
                 users.role_id = roles.id AND
-                customers.account_id = accounts.id
+                customers.account_id = accounts.id AND
+                accounts.account_type_id = account_types.id
             ");
             return response()->json($customers);
         }
@@ -53,15 +55,25 @@
             $customer = new Customer();
             $customer->account_id = $validatedData['account_id'];
             $user->customer()->save($customer); // save it using the hasOne
-            return response()->json(["success" => "new branch created"], 201);
+
+            // create account number
+            $customer_account_number = rand(100000, 300000);
+            // Insert data into customer_account table
+            $account_number = new CustomerAccount();
+            $account_number->account_number = $customer_account_number;
+            $account_number->customer_id = $customer->id; // Set the foreign key manually
+            $account_number->save();
+            return response()->json(["success" => "new customer registered"], 201);
         }
 
         public function show(Request $request, $id){
-            $employees = DB::select("SELECT users.created_at, users.updated_at, users.name as user_name, users.email, users.phone_number, users.gender, users.address, users.dob, roles.name as role_name, accounts.name as account_name, accounts.account_type
-                FROM users, customers, roles, accounts WHERE
+            $employees = DB::select("SELECT users.created_at, users.updated_at, users.name as user_name, users.email, users.phone_number, users.gender, users.address, users.dob, roles.name as role_name, accounts.name as account_name, account_types.account_type_name, customer_accounts.account_number FROM
+                users, customers, roles, accounts, account_types, customer_accounts WHERE
                 customers.user_id = users.id AND
                 users.role_id = roles.id AND
-                customers.account_id = accounts.id and users.id = '$id'
+                accounts.account_type_id = account_types.id AND
+                customer_accounts.customer_id = customers.id AND
+                customers.account_id = accounts.id AND users.id = '$id'
             ");
             if (!empty($employees)) {
                 return response()->json($employees);

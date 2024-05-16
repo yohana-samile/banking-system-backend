@@ -16,7 +16,8 @@
                 $table->string('city'); //region
                 $table->string('district');
                 $table->string('ward');
-                $table->string('zip_code');
+                $table->string('address');
+                // $table->string('zip_code');
                 $table->timestamps();
             });
         }

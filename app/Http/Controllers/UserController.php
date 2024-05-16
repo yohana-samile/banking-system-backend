@@ -54,11 +54,14 @@
                 'gender' => $validatedData['gender'],
                 'password' => Hash::make($validatedData['password']),
             ]);
+
             // create employee record for this user
             $employee = new Employee();
             $employee->branch_id = $validatedData['branch_id'];
             $user->employee()->save($employee); // save it using the hasOne
-            return response()->json(["success" => "new branch created"], 201);
+            // $token = $user->createToken('authToken')->plainTextToken; This work for passport i will try in another project inshaallah
+
+            return response()->json(["success" => "new employee regstered"], 201);
         }
 
         public function show(Request $request, $id){
