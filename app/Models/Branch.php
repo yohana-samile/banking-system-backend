@@ -11,4 +11,8 @@
         public function employees(){
             return $this->hasMany(Employee::class);
         }
+        public function bankBalances(){
+            return $this->hasMany(BankBalance::class);
+        }
     }
+

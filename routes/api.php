@@ -107,5 +107,6 @@
         Route::get('/bankBalance', 'index');
         Route::get('bankBalance/{id}', 'show');
         Route::post('/bankBalance', 'store');
+        Route::post('/bankBalance', 'update');
         Route::get('/total_balance', 'total_balance');
     });
