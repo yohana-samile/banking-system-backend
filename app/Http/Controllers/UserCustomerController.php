@@ -83,4 +83,14 @@
             }
         }
 
+        // total customers
+        public function totalCustomers(){
+            $result = DB::select("SELECT COUNT(id) as totalCustomers FROM `customers` ");
+            if (!empty($result)) {
+                $customer = $result[0]->totalCustomers;
+            } else {
+                $customer = 0;
+            }
+            return response()->json(['totalCustomers' => $customer]);
+        }
     }

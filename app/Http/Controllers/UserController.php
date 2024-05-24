@@ -113,6 +113,16 @@
             return response()->json($branch, 200);
         }
 
+        // total employees
+        public function totalEmployees(){
+            $result = DB::select("SELECT COUNT(id) as totalEmployees FROM `employees` ");
+            if (!empty($result)) {
+                $employees = $result[0]->totalEmployees;
+            } else {
+                $employees = 0;
+            }
+            return response()->json(['totalEmployees' => $employees]);
+        }
     }
 
 

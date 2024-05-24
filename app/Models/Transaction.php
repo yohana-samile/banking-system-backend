@@ -3,12 +3,11 @@
     use Illuminate\Database\Eloquent\Factories\HasFactory;
     use Illuminate\Database\Eloquent\Model;
 
-    class Loan extends Model {
+    class Transaction extends Model
+    {
         use HasFactory;
-        protected $fillable = [
-            'customer_id', 'amount', 'interest_rate', 'term', 'start_date', 'status', 'calculated_interest'
-        ];
-        public function customer(){
+        protected $fillable = ['customer_id', 'type', 'amount', 'transaction_date'];
+        public function customer() {
             return $this->belongsTo(Customer::class);
         }
     }

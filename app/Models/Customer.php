@@ -21,4 +21,7 @@
         {
             return $this->hasMany(CustomerAccount::class);
         }
+        public function transactions() {
+            return $this->hasMany(Transaction::class);
+        }
     }

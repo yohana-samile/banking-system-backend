@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('customer_id');
             $table->decimal('amount', 10, 2);
-            $table->decimal('interest_rate', 5, 2);
+            $table->decimal('interest_rate', 10, 2);
+            $table->decimal('calculated_interest', 10, 2)->nullable();
             $table->integer('term');
             $table->date('start_date');
-            $table->string('status');
+            $table->string('status')->nullable();
             $table->timestamps();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });    }

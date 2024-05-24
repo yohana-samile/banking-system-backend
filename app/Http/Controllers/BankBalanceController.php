@@ -1,9 +1,10 @@
 <?php
-namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use App\Models\BankBalance;
-use Carbon\Carbon;
-use DB;
+    namespace App\Http\Controllers;
+    use Illuminate\Http\Request;
+    use App\Models\BankBalance;
+    use Carbon\Carbon;
+    use DB;
+    use Illuminate\Support\Facades\Validator;
 
 class BankBalanceController extends Controller
 {
@@ -12,8 +13,12 @@ class BankBalanceController extends Controller
         $bankBalance = DB::select("SELECT branches.name AS branch_name, bank_balances.id, bank_balances.balance AS amount_balance, bank_balances.status, bank_balances.created_at FROM branches, bank_balances WHERE bank_balances.branch_id = branches.id ");
         return response()->json($bankBalance);
     }
-    public function store(Request $request){
-        $bankBalance = BankBalance::create($request->all());
+    public function storebankBalance(Request $request){
+        $validatedData = $request->validate([
+            'balance' => 'required|numeric',
+            'branch_id' => 'required|integer'
+        ]);
+        $bankBalance = BankBalance::create($validatedData);
         $date = '2024-06-06';
         $current_date = Carbon::now()->toDateString();
         if ($current_date >= $date) {
@@ -22,11 +27,9 @@ class BankBalanceController extends Controller
                 "message" => "deposit"
             ], 201);
         }
-        else{
-            return response()->json([
-                "message" => "deposit"
-            ], 201);
-        }
+        return response()->json([
+            "message" => "deposit"
+        ], 201);
     }
 
     public function show($id){

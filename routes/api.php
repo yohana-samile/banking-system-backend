@@ -10,6 +10,8 @@
     use App\Http\Controllers\AccountTypeController;
     use App\Http\Controllers\CustomerBalanceController;
     use App\Http\Controllers\BankBalanceController;
+    use App\Http\Controllers\TransactionController;
+    use App\Http\Controllers\LoanTransactionController;
     // use App\Http\Controllers\CustomLoginController;
 
     /*
@@ -80,6 +82,7 @@
         Route::post('/employees', 'store');
         Route::put('employees/{id}', 'update');
         Route::delete('employees/{id}', 'destroy');
+        Route::get('/totalEmployees', 'totalEmployees');
     });
 
 
@@ -90,6 +93,7 @@
         Route::post('/customers', 'store');
         Route::put('customers/{id}', 'update');
         Route::delete('customers/{id}', 'destroy');
+        Route::get('/totalCustomers', 'totalCustomers');
     });
 
     // balance
@@ -106,7 +110,22 @@
     Route::controller(BankBalanceController::class)->group(function () {
         Route::get('/bankBalance', 'index');
         Route::get('bankBalance/{id}', 'show');
-        Route::post('/bankBalance', 'store');
+        // Route::post('bankBalance', 'storebankBalance');
         Route::post('/bankBalance', 'update');
         Route::get('/total_balance', 'total_balance');
+    });
+    Route::post('bankBalance', [BankBalanceController::class, 'storebankBalance']);
+
+    // customer transactions
+    Route::post('customers/{id}/deposit', [TransactionController::class, 'deposit']);
+    Route::post('customers/{id}/withdraw', [TransactionController::class, 'withdraw']);
+    Route::get('customers/{id}/transactions', [TransactionController::class, 'getTransactions']);
+    Route::get('customersTtransactions', [TransactionController::class, 'index']);
+
+    // loans transactions
+    Route::controller(LoanTransactionController::class)->group(function () {
+        Route::get('/loans', 'index');
+        Route::get('loans/{id}', 'show');
+        Route::post('loans', 'storeLoan');
+        Route::post('/loans', 'updateLoan');
     });
