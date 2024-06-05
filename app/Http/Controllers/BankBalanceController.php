@@ -44,8 +44,8 @@ class BankBalanceController extends Controller
         }
     }
 
-    public function update(Request $request){
-        $id = $request->input('id');
+    public function update(Request $request, $id){
+        // $id = $request->input('id');
         $balance = BankBalance::findOrFail($id);
         $balance->status = 'used';
         $balance->save();

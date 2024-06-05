@@ -1,0 +1,14 @@
+https://bank.solo.co.tz/api/accounts
+https://bank.solo.co.tz/api/account_types
+https://bank.solo.co.tz/api/branches
+https://bank.solo.co.tz/api/locations
+https://bank.solo.co.tz/api/regions
+https://bank.solo.co.tz/api/districts
+https://bank.solo.co.tz/api/wards
+https://bank.solo.co.tz/api/employees
+https://bank.solo.co.tz/api/roles
+https://bank.solo.co.tz/api/customers
+https://bank.solo.co.tz/api/actual_balance
+https://bank.solo.co.tz/api/bankBalance
+https://bank.solo.co.tz/api/customersTtransactions
+https://bank.solo.co.tz/api/loans
