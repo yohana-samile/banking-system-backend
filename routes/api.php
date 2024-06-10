@@ -12,6 +12,7 @@
     use App\Http\Controllers\BankBalanceController;
     use App\Http\Controllers\TransactionController;
     use App\Http\Controllers\LoanTransactionController;
+    use App\Http\Controllers\CustomerSmSQuery;
     // use App\Http\Controllers\CustomLoginController;
 
     /*
@@ -100,6 +101,7 @@
     Route::post('/requestNewAccount', [UserCustomerController::class, 'requestNewAccount']);
     Route::get('/requestNewAccount', [UserCustomerController::class, 'returnRequest']);
     Route::put('/requestNewAccount/{id}', [UserCustomerController::class, 'approveRequestAccount']);
+    Route::get('/totalAccountRequest', [UserCustomerController::class, 'totalAccountRequest']);
 
     // balance
     Route::controller(CustomerBalanceController::class)->group(function () {
@@ -140,3 +142,11 @@
     });
     Route::put('/returnLoan/{id}', [LoanTransactionController::class, 'returnLoan']);
     Route::put('/customerReturnLoan/{id}', [LoanTransactionController::class, 'customerReturnLoan']);
+
+    // customer query
+    Route::controller(CustomerSmSQuery::class)->group(function () {
+        Route::get('/queries', 'index');
+        Route::post('queries', 'storeQuery');
+        Route::put('/queries/{id}', 'updateQueryFeedback');
+        Route::delete('/queries/{id}', 'destroyQuery');
+    });

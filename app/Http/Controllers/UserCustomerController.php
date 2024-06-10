@@ -181,4 +181,15 @@
                 return response()->json(["error" => "details not found"]);
             }
         }
+        // total account request
+        public function totalAccountRequest(){
+            $result = DB::select("SELECT COUNT(id) FROM customers WHERE account_validation = 0 ");
+            if (!empty($result)) {
+                $request = $result[0]->totalRequest;
+            }
+            else {
+                $request = 0;
+            }
+            return response()->json(['totalRequest' => $request]);
+        }
     }
