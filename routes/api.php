@@ -95,6 +95,11 @@
         Route::delete('customers/{id}', 'destroy');
         Route::get('/totalCustomers', 'totalCustomers');
     });
+    // myAccountDetails
+    Route::get('/myAccountDetails/{id}', [UserCustomerController::class, 'myAccountDetails']);
+    Route::post('/requestNewAccount', [UserCustomerController::class, 'requestNewAccount']);
+    Route::get('/requestNewAccount', [UserCustomerController::class, 'returnRequest']);
+    Route::put('/requestNewAccount/{id}', [UserCustomerController::class, 'approveRequestAccount']);
 
     // balance
     Route::controller(CustomerBalanceController::class)->group(function () {
@@ -104,7 +109,11 @@
         Route::put('actual_balance/{id}', 'update');
         // Route::delete('actual_balance/{id}', 'destroy'); // you cnt delete balance
         Route::get('show_accounts/{id}', 'show_accounts');
+
+        // customer_transcations
+        Route::post('/customer_transcations', 'withdraw');
     });
+    Route::post('deposit', [CustomerBalanceController::class, 'deposit']);
 
     // bankBalance
     Route::controller(BankBalanceController::class)->group(function () {
@@ -117,15 +126,17 @@
     Route::post('bankBalance', [BankBalanceController::class, 'storebankBalance']);
 
     // customer transactions
-    Route::post('customers/{id}/deposit', [TransactionController::class, 'deposit']);
-    Route::post('customers/{id}/withdraw', [TransactionController::class, 'withdraw']);
-    Route::get('customers/{id}/transactions', [TransactionController::class, 'getTransactions']);
-    Route::get('customersTtransactions', [TransactionController::class, 'index']);
+    Route::post('customers/{id}/deposit', [TransactionController::class, 'deposit']);  //to be deleted
+    Route::post('customers/{id}/withdraw', [TransactionController::class, 'withdraw']);  //to be deleted
+    Route::get('customers/{id}/transactions', [TransactionController::class, 'getTransactions']);  //to be deleted
+    Route::get('customersTtransactions', [TransactionController::class, 'index']); //to be deleted
 
     // loans transactions
     Route::controller(LoanTransactionController::class)->group(function () {
         Route::get('/loans', 'index');
         Route::get('loans/{id}', 'show');
         Route::post('loans', 'storeLoan');
-        Route::post('/loans', 'updateLoan');
+        Route::put('/loans/{id}', 'updateLoan');
     });
+    Route::put('/returnLoan/{id}', [LoanTransactionController::class, 'returnLoan']);
+    Route::put('/customerReturnLoan/{id}', [LoanTransactionController::class, 'customerReturnLoan']);

@@ -14,6 +14,9 @@
         public function customerTranscation(){
             return $this->hasMany(CustomerTranscation::class, 'account_id');
         }
+        public function transactionHistory(){
+            return $this->hasMany(TransactionHistory::class, 'account_id');
+        }
         public function actual_balance(){
             return $this->hasOne(Actual_balance::class);
         }

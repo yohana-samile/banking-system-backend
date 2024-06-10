@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->decimal('interest_rate', 10, 2);
             $table->decimal('calculated_interest', 10, 2)->nullable();
-            $table->integer('term');
+            $table->boolean('term')->default(false);
             $table->date('start_date');
             $table->string('status')->nullable();
             $table->timestamps();

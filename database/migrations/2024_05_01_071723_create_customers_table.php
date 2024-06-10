@@ -13,6 +13,7 @@
                 // $table->string('first_name');
                 // $table->string('middle_name');
                 // $table->string('surname'); this three attribute i replaced them by attribute name in the user table
+                $table->boolean('account_validation')->default(true);
                 $table->unsignedBigInteger('user_id');
                 $table->unsignedBigInteger('account_id');
                 $table->timestamps();

@@ -6,7 +6,7 @@
     class AccountController extends Controller {
         public function index(){
             // $accounts = Account::all();
-            $accounts = DB::select("SELECT accounts.name, accounts.account_for, accounts.created_at, account_types.account_type_name FROM
+            $accounts = DB::select("SELECT accounts.id, accounts.name, accounts.account_for, accounts.created_at, account_types.account_type_name FROM
                 accounts, account_types WHERE
                 accounts.account_type_id = account_types.id
             ");

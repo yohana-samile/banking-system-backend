@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('transaction_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['deposit', 'withdrawal', 'transfer']);
+            $table->enum('transaction_type', ['deposit', 'withdrawal', 'transfer']);
             $table->decimal('amount', 10, 2);
-            $table->timestamp('transaction_date')->useCurrent();
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('customer_account_id');
             $table->timestamps();
+            $table->foreign('customer_account_id')->references('id')->on('customer_accounts');
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('transaction_histories');
     }
 };

@@ -2,8 +2,11 @@
     namespace App\Http\Controllers;
     use Illuminate\Http\Request;
     use App\Models\Loan;
+    use App\Models\User;
+    use App\Models\Customer;
     use DB;
     use Illuminate\Support\Facades\Validator;
+    use Carbon\Carbon;
 
     class LoanTransactionController extends Controller {
         public function index(){
@@ -18,31 +21,43 @@
         public function storeLoan(Request $request){
             $validatedData = $request->validate([
                 'customer_id' =>'required',
-                'amount' =>'required|numeric',
-                'term' =>'required',
-                'start_date' =>'required|date'
+                'amount' => 'required|numeric|min:0',
+                'term' => 'required|boolean',
             ]);
-            if ($validatedData['amount'] < 500000) {
-                $interest_rate = 0.05;
-                // $calculated_interest_rate = $validatedData['amount'] * $interest_rate % 100;
+
+            $customer = DB::table('customers')->where('user_id', $validatedData['customer_id'])->first();
+
+            if (!$customer) {
+                return response()->json(['error' => 'Customer not found'], 404);
             }
-            if ($validatedData['amount'] > 500000 && $validatedData['amount'] <= 1000000) {
-                $interest_rate = 0.07;
+            try{
+
+                $start_date = Carbon::now()->format('Y-m-d');
+                if ($validatedData['amount'] < 500000) {
+                    $interest_rate = 0.05;
+                    // $calculated_interest_rate = $validatedData['amount'] * $interest_rate % 100;
+                }
+                if ($validatedData['amount'] > 500000 && $validatedData['amount'] <= 1000000) {
+                    $interest_rate = 0.07;
+                }
+                elseif ($validatedData['amount'] > 1000000){
+                    $interest_rate = 0.10;
+                }
+                $calculated_interest = $validatedData['amount'] * $interest_rate;
+                $user = Loan::create([
+                    'customer_id' => $customer->id,
+                    'amount' => $validatedData['amount'],
+                    'interest_rate' => $interest_rate * 100,
+                    'calculated_interest' => $calculated_interest,
+                    'term' => $validatedData['term'],
+                    'start_date' => $start_date,
+                    'status' => "pending"
+                ]);
+                return response()->json(["success" => "Loan created"], 201);
             }
-            elseif ($validatedData['amount'] > 1000000){
-                $interest_rate = 0.10;
+            catch(\Exception $e){
+                return response()->json(['error' => 'Loan Request Failed, please try again', 'details' => $e->getMessage()], 500);
             }
-            $calculated_interest = $validatedData['amount'] * $interest_rate;
-            $user = Loan::create([
-                'customer_id' => $validatedData['customer_id'],
-                'amount' => $validatedData['amount'],
-                'interest_rate' => $interest_rate * 100,
-                'calculated_interest' => $calculated_interest,
-                'term' => $validatedData['term'],
-                'start_date' => $validatedData['start_date'],
-                'status' => "borrow"
-            ]);
-            return response()->json(["success" => "Loan created"], 201);
         }
 
         public function show(Request $request, $id) {
@@ -65,7 +80,7 @@
             $validatedData = $request->validate([
                 'customer_id' =>'nullable',
                 'amount' =>'nullable|numeric',
-                'term' =>'nullable', // how to make this to be passed empty sometimes
+                'term' =>'nullable',
                 'start_date' =>'nullable|date'
             ]);
             $interest_rate = null;
@@ -101,6 +116,42 @@
             return response()->json($loan, 200);
         }
 
+
+        // return loan
+        public function returnLoan(Request $request, $id){
+            $validatedData = $request->validate([
+                'status' => 'required|string',
+            ]);
+
+            try {
+                $loan = Loan::findOrFail($id);
+                $loan->status = $validatedData['status'];
+                $loan->save();
+
+                return response()->json(['message' => 'Loan Status Updated Successfully'], 200);
+            }
+            catch (\Exception $e) {
+                return response()->json(['error' => 'Failed to Update Loan Status, please try again', 'details' => $e->getMessage()], 500);
+            }
+        }
+
+        // customerReturnLoan
+        public function customerReturnLoan(Request $request, $id){
+            $validatedData = $request->validate([
+                'status' => 'required|string',
+            ]);
+
+            try {
+                $loan = Loan::findOrFail($id);
+                $loan->status = $validatedData['status'];
+                $loan->save();
+
+                return response()->json(['message' => 'Loan Status Updated Successfully'], 200);
+            }
+            catch (\Exception $e) {
+                return response()->json(['error' => 'Failed to Update Loan Status, please try again', 'details' => $e->getMessage()], 500);
+            }
+        }
         public function destroy(Request $request, $id){
             $loan = Loan::findOrFail($id);
             $loan->delete($loan);

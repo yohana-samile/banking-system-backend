@@ -10,7 +10,7 @@
         public function up(): void {
             Schema::create('accounts', function (Blueprint $table) {
                 $table->id();
-                $table->string('name');
+                $table->string('name')->unique();
                 $table->string('account_for');
                 $table->unsignedBigInteger('account_type_id');
                 $table->timestamps();

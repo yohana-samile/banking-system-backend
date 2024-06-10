@@ -6,7 +6,7 @@
     class Customer extends Model {
         use HasFactory;
         protected $fillable = [
-            'account_id', 'user_id'
+            'account_id', 'user_id', 'account_validation'
         ];
         public function user(){
             return $this->belongsTo(User::class);
