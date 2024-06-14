@@ -63,6 +63,7 @@
                 'amount' =>'required|numeric',
                 'description' =>'nullable|string',
                 'customer_account_id' =>'required|integer',
+                'transaction_performed_by' =>'required|string',
             ]);
             $customer_account_id = $validatedData['customer_account_id'];
             $data = DB::table('customer_transcations')->where('customer_account_id', $customer_account_id)->first();
@@ -72,6 +73,7 @@
                     'amount' => $validatedData['amount'],
                     'description' => $validatedData['description'],
                     'customer_account_id' => $validatedData['customer_account_id'],
+                    'transaction_performed_by' => $validatedData['transaction_performed_by'],
                 ]);
                 if ($transaction) {
                     $insert = TransactionHistory::create([
@@ -285,5 +287,11 @@
             if ($validatedData['amount'] > $data->amount) {
                 return response()->json(["error" => "You don't have enough balance"]);
             }
+        }
+
+        // customer accounts
+        public function customer_account_number(){
+            $account_numbers = DB::select("SELECT customer_accounts.id, customer_accounts.account_number FROM `customer_accounts` ");
+            return response()->json($account_numbers);
         }
     }

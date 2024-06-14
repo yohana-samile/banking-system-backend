@@ -6,7 +6,7 @@
     class CustomerTranscation extends Model {
         use HasFactory;
         protected $fillable = [
-            'transaction_type', 'amount', 'customer_account_id', 'description'
+            'transaction_type', 'amount', 'customer_account_id', 'description', 'transaction_performed_by'
             // 'transaction_id', 'amount_deposit', 'amount_withdraw', 'actual_balance_id', 'account_id', 'user_id'
         ];
         public function customerAccount(){

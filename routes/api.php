@@ -86,7 +86,6 @@
         Route::get('/totalEmployees', 'totalEmployees');
     });
 
-
     // user customers
     Route::controller(UserCustomerController::class)->group(function () {
         Route::get('/customers', 'index');
@@ -114,6 +113,7 @@
 
         // customer_transcations
         Route::post('/customer_transcations', 'withdraw');
+        Route::get('customer_account_numbers', [CustomerBalanceController::class, 'customer_account_number']);
     });
     Route::post('deposit', [CustomerBalanceController::class, 'deposit']);
 
@@ -128,9 +128,9 @@
     Route::post('bankBalance', [BankBalanceController::class, 'storebankBalance']);
 
     // customer transactions
-    Route::post('customers/{id}/deposit', [TransactionController::class, 'deposit']);  //to be deleted
-    Route::post('customers/{id}/withdraw', [TransactionController::class, 'withdraw']);  //to be deleted
-    Route::get('customers/{id}/transactions', [TransactionController::class, 'getTransactions']);  //to be deleted
+    // Route::post('customers/{id}/deposit', [TransactionController::class, 'deposit']);  //to be deleted
+    // Route::post('customers/{id}/withdraw', [TransactionController::class, 'withdraw']);  //to be deleted
+    // Route::get('customers/{id}/transactions', [TransactionController::class, 'getTransactions']);  //to be deleted
     Route::get('customersTtransactions', [TransactionController::class, 'index']); //to be deleted
 
     // loans transactions

@@ -18,6 +18,7 @@
                 $table->text('description')->nullable();
                 $table->unsignedBigInteger('customer_account_id');
                 // $table->unsignedBigInteger('user_id');
+                $table->string('transaction_performed_by');
                 $table->timestamps();
                 // $table->foreign('actual_balance_id')->references('id')->on('actual_balances');
                 $table->foreign('customer_account_id')->references('id')->on('customer_accounts');

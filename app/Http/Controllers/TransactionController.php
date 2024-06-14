@@ -3,13 +3,14 @@
     use Illuminate\Http\Request;
     use App\Models\Transaction;
     use DB;
-    
+
     class TransactionController extends Controller {
         public function index(){
-            $transactions = DB::select("SELECT users.name AS customer_name, customers.id, transactions.type, transactions.amount, transactions.transaction_date FROM
-                users, customers, transactions WHERE
-                customers.user_id = users.id AND
-                transactions.customer_id = customers.id
+            $transactions = DB::select("SELECT users.name AS customer_name, customer_accounts.account_number, transaction_histories.transaction_type as type, transaction_histories.amount, transaction_histories.description, transaction_histories.created_at as transaction_date FROM
+                users, customers, customer_accounts, transaction_histories WHERE
+                customers.user_id= users.id AND
+                customer_accounts.customer_id = customers.id AND
+                transaction_histories.customer_account_id = customer_accounts.id
             ");
             return response()->json($transactions);
         }
